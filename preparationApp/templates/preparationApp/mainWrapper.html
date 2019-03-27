@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" type="text/css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link h6" href="/">Главная</a></li>
+                <li class="nav-item"><a class="nav-link h6" href="/teams">Команды</a></li>
+                <li class="nav-item"><a class="nav-link h6" href="/quests">Квесты</a></li>
+            </ul>
+        </div>
+        {% if user.is_authenticated %}
+            <span class="h6 text-white float-right mr-2">{{ user.username }}: </span>
+            <a class="text-light mr-2 h6 float-right" href="/personal">Личный кабинет</a></li>
+            <a class="text-light h6 float-right" href="/logout/">Выйти</a></li>
+        {% else %}
+            <a class="text-light mr-2 h6 float-right" href="/login">Войти</a></li>
+            <a class="text-light h6 float-right" href="/register">Регистрация</a></li>
+        {% endif %}
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

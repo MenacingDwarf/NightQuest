@@ -1,0 +1,7 @@
+{% extends 'preparationApp/mainWrapper.html' %}
+{% block title %}Информация о квесте{% endblock %}
+{% block content %}
+    <h3>{{ quest.title }}</h3>
+    <p>{{ quest.description }}</p>
+    <p>Начало: {{ quest.start_date }}</p>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'preparationApp/mainWrapper.html' %}
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+     <form action="/register/" method="post" class="alert-dark alert text-white w-50"> {% csrf_token %}
+        <input required type="text" pattern="[A-Za-z0-9]{6,50}"
+               title="Логин должен состоять из латинских букв и цифр, от 6 до 50 символов"
+               id="username" name="username" class="form-control text-center w-75 mx-auto"
+               placeholder="Введите ваше имя">
+        <input required type="password" pattern="[A-Za-z0-9]{6,50}"
+               id="password" title="Пароль должен состоять из латинских букв и цифр, от 6 до 50 символов"
+               class="form-control text-center w-75 mx-auto" name="password"
+               placeholder="Введите пароль">
+         <input required type="email"
+               id="email" name="email" class="form-control text-center w-75 mx-auto"
+               placeholder="Введите ваш e-mail">
+        <input type="submit" name="login" id="submit" class="btn btn-primary" value="Войти">
+     </form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{%  extends 'preparationApp/mainWrapper.html' %}
+{% block title %}Команды{% endblock %}
+{% block content %}
+    <div class="alert alert-dark w-25">
+    {% if teams_list|length == 0 %}
+        <p>Нет доступных команд</p>
+    {% else %}
+        {% for team in teams_list %}
+            <h3>{{ team.title }}</h3>
+            <p>{% if user.username == team.captain %}Вы капитан этой команды
+            {% else %}Капитан команды: {{ team.captain }}{% endif %}</p>
+            <a href="/teams/{{ team.id }}">Подробнее...</a>
+        {% endfor %}
+    {% endif %}
+    </div>
+    {% for invite in invites_list %}
+        <p>Пригашение в команду {{ invite.title }}</p>
+        <p>Капитан {{ invite.captain }}</p>
+        <a class="btn btn-primary" href="/teams/accept/invite/{{ invite.id }}">Принять</a>
+    {% endfor %}
+{% endblock %}

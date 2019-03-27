@@ -1,0 +1,35 @@
+{% extends "preparationApp/mainWrapper.html" %}
+{% block title %}Информация о команде{% endblock %}
+{% block content %}
+    {% if team.captain == user.username %}
+        <form action="/teams/change" method="post">{% csrf_token %}
+            <input type="hidden" name="team_id" value="{{ team.id }}">
+            <input type="text" name="title" value="{{ team.title }}" placeholder="Введите название команды">
+            {% for member in team.members %}
+                <p>
+                <input type="radio" name="captain" value="{{ member }}"
+                       {% if member == team.captain %}checked{% endif %}
+                       placeholder="Выберите капитана">{{ member }}
+                </p>
+            {% endfor %}
+            Выгнать из команды:
+            {% for member in team.members %}
+                <p>
+                <input type="checkbox" name="{{ member }}" placeholder="Выберите капитана">{{ member }}
+                </p>
+            {% endfor %}
+            <input type="submit" class="btn btn-primary" value="Сохранить изменения">
+        </form>
+        <form action="/teams/add/member" method="post">{% csrf_token %}
+            <input type="hidden" value="{{ team.id }}" name="team_id">
+            <input type="text" placeholder="Введите имя нового игрока" name="new_member">
+            <input type="submit" value="Отправить">
+        </form>
+    {% else %}
+        <h3>{{ team.title }}</h3>
+        {% for member in team.members %}
+            <p>{{ member }}{% if member == team.captain %} (капитан){% endif %}</p>
+        {% endfor %}
+        <a class="btn btn-danger" href="{{ team.id }}/leave">Выйти из команды</a>
+    {% endif %}
+{% endblock %}

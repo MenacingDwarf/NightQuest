@@ -95,6 +95,14 @@ def change_team(request):
     return redirect('/teams')
 
 
+def add_team(request):
+    team = models.Team(captain=get_user(request.user.username), title=request.POST['title'])
+    team.save()
+    team.members.add(get_user(request.user.username))
+    team.save()
+    return redirect('/teams')
+
+
 def add_member(request):
     invite = models.Invite(new_member=get_user(request.POST['new_member']),
                            team=models.Team.objects.get(id=request.POST['team_id']))

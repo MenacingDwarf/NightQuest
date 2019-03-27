@@ -2,9 +2,11 @@
 {% block title %}Информация о команде{% endblock %}
 {% block content %}
     {% if team.captain == user.username %}
-        <form action="/teams/change" method="post">{% csrf_token %}
+        <form class="mb-2" action="/teams/change" method="post">{% csrf_token %}
+            <p>Название команды:</p>
             <input type="hidden" name="team_id" value="{{ team.id }}">
-            <input type="text" name="title" value="{{ team.title }}" placeholder="Введите название команды">
+            <input type="text" class="form-control w-25 mb-2" name="title" value="{{ team.title }}" placeholder="Введите название команды">
+            <p>Капитан команды:</p>
             {% for member in team.members %}
                 <p>
                 <input type="radio" name="captain" value="{{ member }}"
@@ -15,15 +17,18 @@
             Выгнать из команды:
             {% for member in team.members %}
                 <p>
-                <input type="checkbox" name="{{ member }}" placeholder="Выберите капитана">{{ member }}
+                {% if member != team.captain %}
+                    <input type="checkbox" class="form-check-inline" name="{{ member }}"
+                           placeholder="Выберите капитана">{{ member }}
+                {% endif %}
                 </p>
             {% endfor %}
             <input type="submit" class="btn btn-primary" value="Сохранить изменения">
         </form>
         <form action="/teams/add/member" method="post">{% csrf_token %}
             <input type="hidden" value="{{ team.id }}" name="team_id">
-            <input type="text" placeholder="Введите имя нового игрока" name="new_member">
-            <input type="submit" value="Отправить">
+            <input type="text" class="form-control w-25 mb-2" placeholder="Введите имя нового игрока" name="new_member">
+            <input type="submit" class="btn btn-success" value="Отправить">
         </form>
     {% else %}
         <h3>{{ team.title }}</h3>

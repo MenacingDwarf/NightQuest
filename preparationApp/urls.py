@@ -17,5 +17,6 @@ urlpatterns = [
     path('teams/accept/invite/<int:invite_id>', views.accept_invite, name='accept_invite'),
 
     path('quests', views.quests, name='quests'),
-    path('quests/<int:quest_id>', views.quest_info, name='quest_info')
+    path('quests/<int:quest_id>', views.quest_info, name='quest_info'),
+    path('quests/request', views.make_quest_request, name='make_quest_request')
 ]

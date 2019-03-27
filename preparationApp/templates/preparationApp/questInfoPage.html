@@ -4,4 +4,23 @@
     <h3>{{ quest.title }}</h3>
     <p>{{ quest.description }}</p>
     <p>Начало: {{ quest.start_date }}</p>
+    {% if quest.owner.username != user.username %}
+        <h5>Подать заявку:</h5>
+        <form action="/quests/request" method="post">{% csrf_token %}
+            <input type="hidden" name="id" value="{{ quest.id }}">
+            <label for="team-select">Выберете команду</label>
+            <select class="form-control w-50 mb-2" name="team" id="team-select">
+                {% for team in teams %}
+                    <option value="{{ team.id }}">{{ team.title }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" class="btn btn-success" value="Отправить">
+        </form>
+    {% else %}
+        <h5>Заявки на квест:</h5>
+        {% for req in requests %}
+            <p>{{ req.team }}</p>
+        {% endfor %}
+        <a class="btn btn-primary" href="#">Редактировать</a>
+    {% endif %}
 {% endblock %}

@@ -28,3 +28,11 @@ class Invite(models.Model):
 
     class Meta:
         unique_together = (("new_member", "team"),)
+
+
+class Request(models.Model):
+    quest = models.ForeignKey(Quest, models.CASCADE)
+    team = models.ForeignKey(Team, models.CASCADE)
+
+    class Meta:
+        unique_together = (("quest", "team"),)

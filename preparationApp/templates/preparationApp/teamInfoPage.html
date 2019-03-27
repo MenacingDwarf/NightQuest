@@ -6,14 +6,12 @@
             <p>Название команды:</p>
             <input type="hidden" name="team_id" value="{{ team.id }}">
             <input type="text" class="form-control w-25 mb-2" name="title" value="{{ team.title }}" placeholder="Введите название команды">
-            <p>Капитан команды:</p>
-            {% for member in team.members %}
-                <p>
-                <input type="radio" name="captain" value="{{ member }}"
-                       {% if member == team.captain %}checked{% endif %}
-                       placeholder="Выберите капитана">{{ member }}
-                </p>
-            {% endfor %}
+            <label for="captain">Капитан команды:</label>
+            <select class="form-control" id="captain" name="captain">
+                {% for member in team.members %}
+                    <option value="{{ member }}" {% if member == team.captain %}selected{% endif %}>{{ member }}</option>
+                {% endfor %}
+            </select>
             Выгнать из команды:
             {% for member in team.members %}
                 <p>
@@ -25,6 +23,7 @@
             {% endfor %}
             <input type="submit" class="btn btn-primary" value="Сохранить изменения">
         </form>
+
         <form action="/teams/add/member" method="post">{% csrf_token %}
             <input type="hidden" value="{{ team.id }}" name="team_id">
             <input type="text" class="form-control w-25 mb-2" placeholder="Введите имя нового игрока" name="new_member">

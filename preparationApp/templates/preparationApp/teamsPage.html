@@ -2,23 +2,23 @@
 {% block title %}Команды{% endblock %}
 {% block content %}
     {% if teams_list|length == 0 %}
-        <div class="alert alert-dark w-25 mb-2">
+        <div class="alert alert-dark w-50 mb-2">
             <p>Нет доступных команд</p>
         </div>
     {% else %}
         {% for team in teams_list %}
-            <div class="alert alert-dark w-25 mb-2">
+            <div class="alert alert-dark w-50 mb-2">
                 <h3>{{ team.title }}</h3>
-                <p>{% if user.username == team.captain %}Вы капитан этой команды
+                <p>{% if user.username == team.captain.username %}Вы капитан этой команды
                 {% else %}Капитан команды: {{ team.captain }}{% endif %}</p>
                 <a href="/teams/{{ team.id }}">Подробнее...</a>
             </div>
         {% endfor %}
     {% endif %}
     {% for invite in invites_list %}
-        <div class="alert alert-dark w-25 mb-2">
-            <p>Пригашение в команду:</p> <p><b>"{{ invite.title }}"</b></p>
-            <p>Капитан: {{ invite.captain }}</p>
+        <div class="alert alert-dark w-50 mb-2">
+            <p>Пригашение в команду:</p> <p><b>"{{ invite.team.title }}"</b></p>
+            <p>Капитан: {{ invite.team.captain }}</p>
             <a class="btn btn-primary" href="/teams/accept/invite/{{ invite.id }}">Принять</a>
         </div>
     {% endfor %}

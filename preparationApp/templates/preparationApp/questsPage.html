@@ -1,7 +1,22 @@
 {% extends 'preparationApp/mainWrapper.html' %}
 {% block title %}Квесты{% endblock %}
 {% block content %}
+    <h3>Ваши квесты:</h3>
     {% for quest in quests_list %}
-        <h3><a href="quests/{{ quest.id }}">{{ quest.title }}</a></h3>
+        {% if quest.owner.username == user.username %}
+            <div class="alert alert-dark w-50">
+                <h3>{{ quest.title }}</h3>
+                <a href="quests/{{ quest.id }}">Подробнее...</a>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <h3>Другие квесты:</h3>
+    {% for quest in quests_list %}
+        {% if quest.owner.username != user.username %}
+            <div class="alert alert-dark w-50">
+                <h3>{{ quest.title }}</h3>
+                <a href="quests/{{ quest.id }}">Подробнее...</a>
+            </div>
+        {% endif %}
     {% endfor %}
 {% endblock %}

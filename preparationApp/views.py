@@ -59,21 +59,13 @@ def personal_area(request):
 
 
 def teams(request):
-    args = {'teams_list': [], 'invites_list': []}
-    teams_list = filter(lambda t: User.objects.get(username=request.user.username) in t.members.all(),
-                        models.Team.objects.all())
-    for item in teams_list:
-        team = {'id': item.id, 'title': item.title, 'captain': str(item.captain)}
-        args['teams_list'].append(team)
+    teams_list = list(filter(lambda t: User.objects.get(username=request.user.username) in t.members.all(),
+                             models.Team.objects.all()))
 
-    invites_list = filter(lambda i: User.objects.get(username=request.user.username) == i.new_member,
-                          models.Invite.objects.all())
+    invites_list = list(filter(lambda i: User.objects.get(username=request.user.username) == i.new_member,
+                               models.Invite.objects.all()))
 
-    for item in invites_list:
-        invite = {'id': item.id, 'title': item.team.title, 'captain': str(item.team.captain)}
-        args['invites_list'].append(invite)
-
-    return render(request, 'preparationApp/teamsPage.html', args)
+    return render(request, 'preparationApp/teamsPage.html', {'teams_list': teams_list, 'invites_list': invites_list})
 
 
 def team_info(request, team_id):
@@ -130,7 +122,21 @@ def quests(request):
 
 def quest_info(request, quest_id):
     quest = models.Quest.objects.get(id=quest_id)
-    return render(request, 'preparationApp/questInfoPage.html', {'quest': quest})
+    teams_list = list(filter(lambda t: User.objects.get(username=request.user.username) == t.captain,
+                             models.Team.objects.all()))
+    requests_list = list(filter(lambda r: models.Quest.objects.get(id=quest_id) == r.quest,
+                                models.Request.objects.all()))
+    print(requests_list)
+
+    return render(request, 'preparationApp/questInfoPage.html',
+                  {'quest': quest, 'teams': teams_list, 'requests': requests_list})
+
+
+def make_quest_request(request):
+    req = models.Request(quest=models.Quest.objects.get(id=request.POST['id']),
+                         team=models.Team.objects.get(id=int(request.POST['team'])))
+    req.save()
+    return redirect('/quests')
 
 
 def log_out(request):

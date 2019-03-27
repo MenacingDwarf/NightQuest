@@ -2,9 +2,9 @@
 {% block title %}Личный кабинет{% endblock %}
 {% block content %}
     <form action="/personal/" method="post">{% csrf_token %}
-        <input type="text" name="f_name" value="{{ user.first_name }}" placeholder="Введите имя">
-        <input type="text" name="l_name" value="{{ user.last_name }}" placeholder="Введите фамилию">
-        <input type="email" name="email" value="{{ user.email }}" placeholder="Введите e-mail">
-        <input type="submit" class="btn btn-primary" value="Сохранить изменения">
+        <input type="text" class="form-control w-50 mb-2" name="f_name" value="{{ user.first_name }}" placeholder="Введите имя">
+        <input type="text" class="form-control w-50 mb-2" name="l_name" value="{{ user.last_name }}" placeholder="Введите фамилию">
+        <input type="email" class="form-control w-50 mb-2" name="email" value="{{ user.email }}" placeholder="Введите e-mail">
+        <input type="submit" class="btn btn-primary w-25 mx-auto" value="Сохранить изменения">
     </form>
 {% endblock %}

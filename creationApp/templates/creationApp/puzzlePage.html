@@ -1,0 +1,17 @@
+{% extends 'creationApp/mainWrapper.html' %}
+{% block title %}Редактирование загадки{% endblock %}
+{% block content %}
+    <form action="/edit/{{ quest.id }}/edit/puzzle" method="post">{% csrf_token %}
+        <input type="hidden" name="id" value="{{ puzzle.id }}">
+        <label for="puzzle_title">Введите название загадки</label>
+        <input type="text" class="form-control mb-2 w-50" id="puzzle_title" placeholder="Новая загадка"
+               name="title" value="{{ puzzle.title }}">
+        <label for="html">Введите текст загадки</label>
+        <textarea type="text" class="form-control mb-2 w-50" rows="6" id="html" name="html"
+                  placeholder="Описание новой загадки">{{ puzzle.html }}</textarea>
+        <label for="auto_skip_minutes">Введите время автоскипа закадки (в минутах)</label>
+        <input type="number" class="form-control w-50 mb-2" step="5" name="auto_skip_minutes"
+               id="auto_skip_minutes" placeholder="120" value="{{ puzzle.auto_skip_minutes }}">
+        <input type="submit" class="btn-primary btn" value="Сохранить">
+    </form>
+{% endblock %}

@@ -118,8 +118,12 @@ def accept_invite(request, invite_id):
 
 
 def quests(request):
-    quests_list = models.Quest.objects.all()
-    return render(request, 'preparationApp/questsPage.html', {'quests_list': quests_list})
+    your_quests = list(filter(lambda q: get_user(request.user.username) == q.owner,
+                              models.Quest.objects.all()))
+    other_quests = list(filter(lambda q: get_user(request.user.username) != q.owner,
+                              models.Quest.objects.all()))
+    return render(request, 'preparationApp/questsPage.html',
+                  {'your_quests': your_quests, 'other_quests': other_quests})
 
 
 def quest_info(request, quest_id):

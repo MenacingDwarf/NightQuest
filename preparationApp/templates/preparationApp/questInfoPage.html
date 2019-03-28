@@ -14,13 +14,21 @@
                     <option value="{{ team.id }}">{{ team.title }}</option>
                 {% endfor %}
             </select>
-            <input type="submit" class="btn btn-success" value="Отправить">
+            <input type="submit" class="btn btn-success mb-2" value="Отправить">
         </form>
+        Зарегистрированы?
+        <a class="btn btn-dark" href="/quest/{{ quest.id }}">Участвовать</a>
     {% else %}
-        <h5>Заявки на квест:</h5>
+        <h4>Заявки на квест:</h4>
         {% for req in requests %}
-            <p>{{ req.team }}</p>
+            <form class="alert alert-dark w-25 text-center" action="/quests/submit" method="post">{% csrf_token %}
+                <input type="hidden" name="id" value="{{ req.id }}">
+                <h5>{{ req.team }}</h5>
+                <p>Капитан: {{ req.team.captain }}</p>
+                <input type="submit" class="btn btn-success mb-2" value="Принять">
+            </form>
+
         {% endfor %}
-        <a class="btn btn-primary" href="#">Редактировать</a>
+        <a class="btn btn-primary" href="/edit/{{ quest.id }}">Редактировать</a>
     {% endif %}
 {% endblock %}

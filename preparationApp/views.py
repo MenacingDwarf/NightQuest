@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from . import models
 from django.contrib.auth.models import User
+from holdingApp.models import Member
 from django.contrib.auth import authenticate, logout, login
+from datetime import datetime
 
 
 def get_user(name):
@@ -59,10 +61,10 @@ def personal_area(request):
 
 
 def teams(request):
-    teams_list = list(filter(lambda t: User.objects.get(username=request.user.username) in t.members.all(),
+    teams_list = list(filter(lambda t: get_user(request.user.username) in t.members.all(),
                              models.Team.objects.all()))
 
-    invites_list = list(filter(lambda i: User.objects.get(username=request.user.username) == i.new_member,
+    invites_list = list(filter(lambda i: get_user(request.user.username) == i.new_member,
                                models.Invite.objects.all()))
 
     return render(request, 'preparationApp/teamsPage.html', {'teams_list': teams_list, 'invites_list': invites_list})
@@ -132,10 +134,25 @@ def quest_info(request, quest_id):
                   {'quest': quest, 'teams': teams_list, 'requests': requests_list})
 
 
+def add_quest(request):
+    quest = models.Quest(title=request.POST['title'], description=request.POST['description'],
+                         owner=get_user(request.user.username), start_date=datetime.now())
+    quest.save()
+    return redirect('/quests')
+
+
 def make_quest_request(request):
     req = models.Request(quest=models.Quest.objects.get(id=request.POST['id']),
                          team=models.Team.objects.get(id=int(request.POST['team'])))
     req.save()
+    return redirect('/quests')
+
+
+def submit_quest_request(request):
+    req = models.Request.objects.get(id=int(request.POST['id']))
+    member = Member(team=req.team, quest=req.quest, )
+    member.save()
+    req.delete()
     return redirect('/quests')
 
 

@@ -19,4 +19,14 @@
             </div>
         {% endif %}
     {% endfor %}
+    <h3>Добавить квест:</h3>
+    <form action="/quests/add" method="post">{% csrf_token %}
+        <label for="title">Введите название квеста</label>
+        <input type="text" class="form-control w-25 mb-2"
+               id="title" name="title" placeholder="Новый квест">
+        <label for="description">Введите описание квеста</label>
+        <input type="text" class="form-control w-25 mb-2"
+               id="description" name="description" placeholder="Описание нового квеста">
+        <input type="submit" class="btn btn-success" value="Создать">
+    </form>
 {% endblock %}

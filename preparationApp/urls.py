@@ -1,4 +1,4 @@
-from django.urls import path,re_path
+from django.urls import path
 from . import views
 
 urlpatterns = [
@@ -18,5 +18,7 @@ urlpatterns = [
 
     path('quests', views.quests, name='quests'),
     path('quests/<int:quest_id>', views.quest_info, name='quest_info'),
-    path('quests/request', views.make_quest_request, name='make_quest_request')
+    path('quests/add', views.add_quest, name='add_quest'),
+    path('quests/request', views.make_quest_request, name='make_quest_request'),
+    path('quests/submit', views.submit_quest_request, name='submit_quest_request')
 ]

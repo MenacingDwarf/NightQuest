@@ -1,0 +1,13 @@
+{% extends 'creationApp/mainWrapper.html' %}
+{% block title %}Редактирование квеста{% endblock %}
+{% block content %}
+    <form action="/edit/{{ quest.id }}" method="post">{% csrf_token %}
+        <label for="title">Название квеста</label>
+        <input type="text" class="form-control mb-2 w-50" id="title" name="title" value="{{ quest.title }}">
+        <label for="description">Описание квеста</label>
+        <input type="text" aria-multiline="true"
+               class="form-control mb-2 w-50"
+               id="description" name="description" value="{{ quest.description }}">
+        <input type="submit" class="btn btn-primary" value="Сохранить">
+    </form>
+{% endblock %}

@@ -23,7 +23,11 @@
             </div>
         {% endfor %}
     {% endif %}
-    <h3>Добавить квест:</h3>
+    <button type="button" id="gifsBtn" class="btn btn-dark mb-2"
+            data-toggle="collapse" data-target="#quest">
+        Добавить квест
+    </button>
+    <div id="quest" class="collapse mb-5">
     <form action="/quests/add" method="post">{% csrf_token %}
         <label for="title">Введите название квеста</label>
         <input type="text" class="form-control w-25 mb-2"
@@ -31,6 +35,7 @@
         <label for="description">Введите описание квеста</label>
         <textarea class="form-control w-50 mb-2" rows="6"
                   id="description" name="description" placeholder="Описание нового квеста"></textarea>
-        <input type="submit" class="btn btn-success" value="Создать">
+        <input type="submit" class="btn btn-success mb-5" value="Создать">
     </form>
+    </div>
 {% endblock %}

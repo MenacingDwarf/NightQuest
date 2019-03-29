@@ -14,7 +14,7 @@
             data-toggle="collapse" data-target="#puzzle">
         Добавить загадку
     </button>
-	<div id="puzzle" class="collapse">
+	<div id="puzzle" class="collapse mb-5">
         <form action="{{ quest.id }}/add/puzzle" method="post">{% csrf_token %}
             <label for="puzzle_title">Введите название загадки</label>
             <input type="text" class="form-control mb-2 w-50" id="puzzle_title" name="title" placeholder="Новая загадка">
@@ -24,7 +24,7 @@
             <label for="auto_skip_minutes">Введите время автоскипа закадки (в минутах)</label>
             <input type="number" class="form-control w-50 mb-2" step="5" name="auto_skip_minutes"
                    id="auto_skip_minutes" placeholder="120">
-            <input type="submit" class="btn-success btn" value="Добавить">
+            <input type="submit" class="btn-success btn mb-5" value="Добавить">
         </form>
     </div>
 {% endblock %}

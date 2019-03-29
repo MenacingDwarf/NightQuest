@@ -36,8 +36,34 @@ def edit_puzzle(request, quest_id):
     return redirect('/edit/'+str(quest_id)+'/puzzle/'+str(request.POST['id']))
 
 
+def delete_puzzle(request, quest_id):
+    puzzle = Puzzle.objects.get(id=request.POST['id'])
+    puzzle.delete()
+    return redirect('/edit/' + str(quest_id))
+
+
 def puzzle_page(request, quest_id, puzzle_id):
     args = get_args(quest_id)
     args['puzzle'] = Puzzle.objects.get(id=puzzle_id)
-    print(args)
+    args['hints'] = list(filter(lambda h: h.puzzle == args['puzzle'], Hint.objects.all()))
+    args['answers'] = list(filter(lambda a: a.puzzle == args['puzzle'], Answer.objects.all()))
     return render(request, 'creationApp/puzzlePage.html', args)
+
+
+def add_answer(request, quest_id):
+    answer = Answer(puzzle=Puzzle.objects.get(id=request.POST['id']), value=request.POST['answer'])
+    answer.save()
+    return redirect('/edit/'+str(quest_id)+'/puzzle/'+str(request.POST['id']))
+
+
+def edit_answers(request, quest_id):
+    for ans in (list(filter(lambda a: a.puzzle == Puzzle.objects.get(id=request.POST['id']), Answer.objects.all()))):
+        ans.value = request.POST['answer'+str(ans.id)]
+        ans.save()
+    return redirect('/edit/' + str(quest_id) + '/puzzle/' + str(request.POST['id']))
+
+
+def delete_answer(request, quest_id, answer_id):
+    answer = Answer.objects.get(id=answer_id)
+    answer.delete()
+    return redirect('/edit/' + str(quest_id) + '/puzzle/' + str(request.POST['id']))

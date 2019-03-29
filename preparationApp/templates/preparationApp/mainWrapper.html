@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}" type="text/css">
 </head>
 <body>
+    {% if message != 'none' %}
+        <script>
+            alert('{{ message }}')
+        </script>
+    {% endif %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav">

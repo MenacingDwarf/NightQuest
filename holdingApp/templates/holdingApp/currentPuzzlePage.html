@@ -1,5 +1,9 @@
 {% extends 'holdingApp/mainWrapper.html' %}
 {% block title %}Текущая загадка{% endblock %}
 {% block content %}
-    Здесь будет текущая загадка
+    {% if to_quest == 'started'%}
+        Квест начался!
+    {% else %}
+        {{ to_quest.days }} дней {{ to_quest.hours }} часов {{ to_quest.minutes }} минут {{ to_quest.seconds }} секунд
+    {% endif %}
 {% endblock %}

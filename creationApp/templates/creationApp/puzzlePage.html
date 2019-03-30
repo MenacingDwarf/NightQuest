@@ -1,53 +1,59 @@
 {% extends 'creationApp/mainWrapper.html' %}
 {% block title %}Редактирование загадки{% endblock %}
 {% block content %}
-    <form action="/edit/{{ quest.id }}/edit/puzzle" method="post">{% csrf_token %}
-        <input type="hidden" name="id" value="{{ puzzle.id }}">
-        <label for="puzzle_title">Введите название загадки</label>
-        <input type="text" class="form-control mb-2 w-50" id="puzzle_title" placeholder="Новая загадка"
-               name="title" value="{{ puzzle.title }}">
-        <label for="html">Введите текст загадки</label>
-        <textarea type="text" class="form-control mb-2 w-50" rows="6" id="html" name="html"
-                  placeholder="Описание новой загадки">{{ puzzle.html }}</textarea>
-        <label for="auto_skip_minutes">Введите время автоскипа закадки (в минутах)</label>
-        <input type="number" class="form-control w-50 mb-2" step="5" name="auto_skip_minutes"
-               id="auto_skip_minutes" placeholder="120" value="{{ puzzle.auto_skip_minutes }}">
-        <input type="submit" class="btn-primary btn mb-2" value="Сохранить">
-    </form>
-    <button type="button" class="btn btn-dark mb-2"
-            data-toggle="collapse" data-target="#answers">
-        Редактировать ответы
-    </button>
-    <div id="answers" class="collapse mb-5">
-        {% if answers|length == 0 %}
-            <p class="alert-dark alert w-50 h6">Нет ответов</p>
-         {% else %}
-        <form action="/edit/{{ quest.id }}/edit/answers" method="post">{% csrf_token %}
+    <div class="row">
+    <div class="col-6">
+        <form action="/edit/{{ quest.id }}/edit/puzzle" method="post">{% csrf_token %}
             <input type="hidden" name="id" value="{{ puzzle.id }}">
-            {% for ans in answers %}
-                <div class="alert alert-dark mb-2">
-                    <label for="answer{{ ans.id }}">Введите ответ</label>
-                    <input type="text" class="form-control w-25 mb-2"
-                           id="answer{{ ans.id }}" name="answer{{ ans.id }}" value="{{ ans.value }}">
-                    <input type="submit" formaction="/edit/{{ quest.id }}/delete/answer/{{ ans.id }}"
-                           formmethod="post" class="btn btn-danger mb-2" value="Удалить">
-                </div>
-                <br>
-            {% endfor %}
-            <input type="submit" class="btn btn-primary mb-2" value="Сохранить">
+            <label for="puzzle_title">Введите название загадки</label>
+            <input type="text" class="form-control mb-2" id="puzzle_title" placeholder="Новая загадка"
+                   name="title" value="{{ puzzle.title }}">
+            <label for="html">Введите текст загадки</label>
+            <textarea type="text" class="form-control mb-2" rows="6" id="html" name="html"
+                      placeholder="Описание новой загадки">{{ puzzle.html }}</textarea>
+            <label for="auto_skip_minutes">Введите время автоскипа закадки (в минутах)</label>
+            <input type="number" class="form-control w-25 mb-2" step="5" name="auto_skip_minutes"
+                   id="auto_skip_minutes" placeholder="120" value="{{ puzzle.auto_skip_minutes }}">
+            <input type="submit" class="btn-primary btn mb-2" value="Сохранить">
         </form>
-        {% endif %}
-        <h5>Добавить ответ</h5>
-        <form action="/edit/{{ quest.id }}/add/answer" method="post">{% csrf_token %}
-            <input type="hidden" name="id" value="{{ puzzle.id }}">
-            <label for="answer">Введите ответ</label>
-            <input type="text" class="form-control w-25 mb-2"
-                   id="answer" name="answer" placeholder="Новый ответ">
-            <input type="submit" class="btn btn-success mb-5" value="Добавить">
-        </form>
-    </div>
-    <form action="/edit/{{ quest.id }}/delete/puzzle" method="post">{% csrf_token %}
+        <form action="/edit/{{ quest.id }}/delete/puzzle" method="post">{% csrf_token %}
         <input type="hidden" name="id" value="{{ puzzle.id }}">
         <input type="submit" class="btn btn-danger mb-5" value="Удалить загадку">
     </form>
+    </div>
+    <div class="col-6">
+        <button type="button" class="btn btn-dark mb-2"
+                data-toggle="collapse" data-target="#answers">
+            Редактировать ответы
+        </button>
+        <div id="answers" class="collapse mb-5">
+            {% if answers|length == 0 %}
+                <p class="alert-dark alert h6">Нет ответов</p>
+             {% else %}
+            <form action="/edit/{{ quest.id }}/edit/answers" method="post">{% csrf_token %}
+                <input type="hidden" name="id" value="{{ puzzle.id }}">
+                {% for ans in answers %}
+                    <div class="alert alert-dark mb-2">
+                        <label class="d-block" for="answer{{ ans.id }}">Введите ответ</label>
+                        <input type="text" class="form-control d-inline w-50 mb-2"
+                               id="answer{{ ans.id }}" name="answer{{ ans.id }}" value="{{ ans.value }}">
+                        <input type="submit" formaction="/edit/{{ quest.id }}/delete/answer/{{ ans.id }}"
+                               formmethod="post" class="btn btn-danger" value="Удалить">
+                    </div>
+                    <br>
+                {% endfor %}
+                <input type="submit" class="btn btn-primary mb-2" value="Сохранить">
+            </form>
+            {% endif %}
+            <h5>Добавить ответ</h5>
+            <form class="mb-5" action="/edit/{{ quest.id }}/add/answer" method="post">{% csrf_token %}
+                <input type="hidden" name="id" value="{{ puzzle.id }}">
+                <label class="d-block" for="answer">Введите ответ</label>
+                <input type="text" class="form-control d-inline w-50 mb-5"
+                       id="answer" name="answer" placeholder="Новый ответ">
+                <input type="submit" class="btn btn-success" value="Добавить">
+            </form>
+        </div>
+    </div>
+    </div>
 {% endblock %}

@@ -1,13 +1,14 @@
 {%  extends 'preparationApp/mainWrapper.html' %}
 {% block title %}Команды{% endblock %}
 {% block content %}
+    <div class="row">
+    <div class="col-6">
+    <h3>Список доступных команд</h3>
     {% if teams_list|length == 0 %}
-        <div class="alert alert-dark w-50 mb-2">
             <p>Нет доступных команд</p>
-        </div>
     {% else %}
         {% for team in teams_list %}
-            <div class="alert alert-dark w-50 mb-2">
+            <div class="alert alert-dark mb-2">
                 <h3>{{ team.title }}</h3>
                 <p>{% if user.username == team.captain.username %}Вы капитан этой команды
                 {% else %}Капитан команды: {{ team.captain }}{% endif %}</p>
@@ -15,16 +16,25 @@
             </div>
         {% endfor %}
     {% endif %}
+    <h4>Создать команду</h4>
+    <form action="teams/add/team" method="post">{% csrf_token %}
+        <label class="d-block" for="title">Название команды</label>
+        <input type="text" class="form-control d-inline w-50" id="title" placeholder="Название команды" name="title">
+        <input type="submit" class="btn btn-success" value="Создать">
+    </form>
+    </div>
+    <div class="col-6">
+    <h3>Приглашения в команду</h3>
+    {% if invites_list|length == 0 %}
+        Нет приглашений в команду
+    {% endif %}
     {% for invite in invites_list %}
-        <div class="alert alert-dark w-50 mb-2">
+        <div class="alert alert-dark mb-2">
             <p>Пригашение в команду:</p> <p><b>"{{ invite.team.title }}"</b></p>
             <p>Капитан: {{ invite.team.captain }}</p>
             <a class="btn btn-primary" href="/teams/accept/invite/{{ invite.id }}">Принять</a>
         </div>
     {% endfor %}
-    <h3>Создать команду</h3>
-    <form action="teams/add/team" method="post">{% csrf_token %}
-        <input type="text" placeholder="Название команды" name="title">
-        <input type="submit" class="btn btn-success" value="Создать">
-    </form>
+    </div>
+    </div>
 {% endblock %}

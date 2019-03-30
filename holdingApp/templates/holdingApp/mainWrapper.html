@@ -14,6 +14,9 @@
             <li class="nav-item"><a class="nav-link h6" href="/quest/{{ quest.id }}">Текущая загадка</a></li>
         </ul>
     </div>
+    <span class="h6 text-white float-right mr-2">{{ user.username }}: </span>
+    <a class="text-light mr-2 h6 float-right" href="/personal">Личный кабинет</a></li>
+    <a class="text-light h6 float-right" href="/logout/">Выйти</a></li>
 </nav>
 <div class="container">
     {% block content %}

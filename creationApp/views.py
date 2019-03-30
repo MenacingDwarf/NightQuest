@@ -29,6 +29,7 @@ def add_puzzle(request, quest_id):
     puzzle = Puzzle(quest=Quest.objects.get(id=quest_id), title=request.POST['title'],
                     html=request.POST['html'], auto_skip_minutes=request.POST['auto_skip_minutes'])
     puzzle.save()
+    Quest.objects.get(id=quest_id).give_puzzles()
     request.session['message'] = 'Загадка была добавлена'
     return redirect('/edit/'+str(quest_id))
 
@@ -46,6 +47,7 @@ def edit_puzzle(request, quest_id):
 def delete_puzzle(request, quest_id):
     puzzle = Puzzle.objects.get(id=request.POST['id'])
     puzzle.delete()
+    Quest.objects.get(id=quest_id).give_puzzles()
     request.session['message'] = 'Загадка была удалена'
     return redirect('/edit/' + str(quest_id))
 

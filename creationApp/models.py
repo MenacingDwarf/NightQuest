@@ -1,9 +1,8 @@
 from django.db import models
-from preparationApp.models import Quest
 
 
 class Puzzle(models.Model):
-    quest = models.ForeignKey(Quest, models.CASCADE)
+    quest = models.ForeignKey('preparationApp.Quest', models.CASCADE)
     title = models.CharField(max_length=50)
     html = models.TextField()
     auto_skip_minutes = models.IntegerField()

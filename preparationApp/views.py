@@ -151,8 +151,8 @@ def quest_info(request, quest_id):
     args['quest'] = models.Quest.objects.get(id=quest_id)
     args['teams'] = list(filter(lambda t: User.objects.get(username=request.user.username) == t.captain,
                                 models.Team.objects.all()))
-    args['requests_list'] = list(filter(lambda r: models.Quest.objects.get(id=quest_id) == r.quest,
-                                        models.Request.objects.all()))
+    args['requests'] = list(filter(lambda r: models.Quest.objects.get(id=quest_id) == r.quest,
+                                   models.Request.objects.all()))
 
     return render(request, 'preparationApp/questInfoPage.html', args)
 
@@ -174,7 +174,8 @@ def make_quest_request(request):
 
 def submit_quest_request(request):
     req = models.Request.objects.get(id=int(request.POST['id']))
-    member = Member(team=req.team, quest=req.quest, )
+    member = Member(team=req.team, quest=req.quest, puzzle_start=req.quest.start_date)
+    member.give_puzzle()
     member.save()
     req.delete()
     return redirect('/quests')

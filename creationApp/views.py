@@ -81,3 +81,29 @@ def delete_answer(request, quest_id, answer_id):
     answer.delete()
     request.session['message'] = 'Ответ был удалён'
     return redirect('/edit/' + str(quest_id) + '/puzzle/' + str(request.POST['id']))
+
+
+def add_hint(request, quest_id):
+    hint = Hint(puzzle=Puzzle.objects.get(id=request.POST['id']),
+                html=request.POST['html'], open_minutes=request.POST['open'], fine_minutes=request.POST['fine'])
+    hint.save()
+    request.session['message'] = 'Подсказка была добавлена'
+    return redirect('/edit/' + str(quest_id) + '/puzzle/' + str(request.POST['id']))
+
+
+def edit_hints(request, quest_id):
+    for hint in list(filter(lambda h: h.puzzle == Puzzle.objects.get(id=request.POST['puzzle_id']),
+                            Hint.objects.all())):
+        hint.html = request.POST['html'+str(hint.id)]
+        hint.open_minutes = request.POST['open'+str(hint.id)]
+        hint.fine_minutes = request.POST['fine'+str(hint.id)]
+        hint.save()
+    request.session['message'] = 'Подсказки были изменены'
+    return redirect('/edit/' + str(quest_id) + '/puzzle/' + str(request.POST['puzzle_id']))
+
+
+def delete_hint(request, quest_id, hint_id):
+    hint = Hint.objects.get(id=hint_id)
+    hint.delete()
+    request.session['message'] = 'Подсказка была удалена'
+    return redirect('/edit/' + str(quest_id) + '/puzzle/' + str(request.POST['puzzle_id']))

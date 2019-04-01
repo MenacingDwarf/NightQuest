@@ -43,6 +43,14 @@ def get_answers(user_id, quest_id):
     return answers
 
 
+def next_puzzle(user_id, quest_id):
+    member = get_member(user_id, quest_id)
+    member.puzzles.add(member.current_puzzle)
+    member.give_puzzle()
+    member.puzzle_start = timezone.now()
+    member.save()
+
+
 def current_puzzle(request, quest_id):
     if get_member(request.user.id, quest_id) is None:
         request.session['message'] = 'Пользователь не зарегистрирован на квест'
@@ -50,10 +58,15 @@ def current_puzzle(request, quest_id):
     else:
         member = get_member(request.user.id, quest_id)
         args = make_args(request)
+        args['time_left'] = parse_date(member.puzzle_start + timezone.timedelta(hours=2) - timezone.now())
+        print(args['time_left'])
+        if args['time_left'] == 'past':
+            next_puzzle(request.user.id, quest_id)
+
         args['to_quest'] = parse_date(Quest.objects.get(id=quest_id).start_date - timezone.now())
         args['quest'] = Quest.objects.get(id=quest_id)
+        args['complete'] = member.complete
         args['puzzle'] = member.current_puzzle
-        args['time_left'] = parse_date(member.puzzle_start + timezone.timedelta(hours=2) - timezone.now())
         args['answers'] = get_answers(request.user.id, quest_id)
 
         return render(request, 'holdingApp/currentPuzzlePage.html', args)
@@ -62,9 +75,12 @@ def current_puzzle(request, quest_id):
 def check_code(request, quest_id):
     member = get_member(request.user.id, quest_id)
     request.session['message'] = 'wrong'
-    for ans in list(filter(lambda a: a.puzzle == member.current_puzzle, Answer.objects.all())):
+    answers = list(filter(lambda a: a.puzzle == member.current_puzzle, Answer.objects.all()))
+    for ans in answers:
         if ans.value == request.POST['code']:
             member.answers.add(ans)
             member.save()
             request.session['message'] = 'right'
+    if len(list(filter(lambda a: a.puzzle == member.current_puzzle, member.answers.all()))) == len(answers):
+        next_puzzle(request.user.id, quest_id)
     return redirect('/quest/'+str(quest_id))

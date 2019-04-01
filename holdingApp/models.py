@@ -9,15 +9,20 @@ class Member(models.Model):
     quest = models.ForeignKey('preparationApp.Quest', models.CASCADE)
     current_puzzle = models.ForeignKey('creationApp.Puzzle', models.SET_DEFAULT, default=1)
     puzzle_start = models.DateTimeField(default=timezone.now)
-    answers = models.ManyToManyField('creationApp.Answer', related_name="users")
-    hints = models.ManyToManyField('creationApp.Hint', related_name="users")
+    answers = models.ManyToManyField('creationApp.Answer', related_name="members", null=True)
+    hints = models.ManyToManyField('creationApp.Hint', related_name="members", null=True)
+    puzzles = models.ManyToManyField('creationApp.Puzzle', related_name="members", null=True)
+    complete = models.BooleanField(default=False)
 
     def give_puzzle(self):
-        if self.quest.free_puzzles():
-            self.current_puzzle = random.choice(self.quest.free_puzzles())
+        print(list(self.puzzles.all()), self.quest.all_puzzles())
+        if list(self.puzzles.all()) == self.quest.all_puzzles():
+            self.complete = True
+        elif [p for p in self.quest.free_puzzles() if p not in list(self.puzzles.all())]:
+            self.current_puzzle = random.choice([p for p in self.quest.free_puzzles() if p not in list(self.puzzles.all())])
             self.save()
-        elif self.quest.all_puzzles():
-            self.current_puzzle = random.choice(self.quest.all_puzzles())
+        elif [p for p in self.quest.all_puzzles() if p not in list(self.puzzles.all())]:
+            self.current_puzzle = random.choice([p for p in self.quest.all_puzzles() if p not in list(self.puzzles.all())])
             self.save()
 
     class Meta:

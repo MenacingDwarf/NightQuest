@@ -183,6 +183,7 @@ def make_quest_request(request):
 def submit_quest_request(request):
     req = models.Request.objects.get(id=int(request.POST['id']))
     member = Member(team=req.team, quest=req.quest, puzzle_start=req.quest.start_date)
+    member.save()
     member.give_puzzle()
     member.save()
     req.delete()

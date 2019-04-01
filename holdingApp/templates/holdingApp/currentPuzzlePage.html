@@ -1,45 +1,49 @@
 {% extends 'holdingApp/mainWrapper.html' %}
 {% block title %}Текущая загадка{% endblock %}
 {% block content %}
-    {% if to_quest == 'past' %}
-        <div class="row">
-            <div class="col-4">
-                <form class="mb-2" action="{{ quest.id }}/check_code" method="post">{% csrf_token %}
-                    <label class="d-block" for="code">Проверить код:</label>
-                    <input type="text" class="form-control w-50 d-inline mb-2"
-                           id="code" name="code" placeholder="Введите код">
-                    <input type="submit" class="btn btn-success" value="Проверить">
-                </form>
-                {% if message == 'right' %}
-                    <div class="alert alert-success">Код введён верно!</div>
-                {% endif %}
-                {% if message == 'wrong' %}
-                    <div class="alert alert-danger">Код введён неверно!</div>
-                {% endif %}
-                <p>Ответы:</p>
-                {% for answer in answers %}
-                    {% if answer == "none" %}
-                        <span class="text-danger">Сектор {{ forloop.counter }}: код не найден</span>
-                    {% else %}
-                        <span class="text-success">Сектор {{ forloop.counter }}: {{ answer }}</span>
-                    {% endif %}
-                    <br>
-                {% endfor %}
-                До автоскипа осталось:
-                <p id="puzzle-timer">{{ time_left.hours }}:{{ time_left.minutes }}:{{ time_left.seconds }}</p>
-            </div>
-            <div class="col-8">
-                <h2 class="text-center">{{ puzzle.title }}</h2>
-                {{ puzzle.html|safe }}
-            </div>
-        </div>
-
+    {% if complete == True %}
+        Вы завершили квест!
     {% else %}
-        <h3>Квест ещё не начался</h3>
-        <p>До начала квеста осталось</p>
-        <span id="to-start-timer">
+        {% if to_quest == 'past' %}
+            <div class="row">
+                <div class="col-4">
+                    <form class="mb-2" action="{{ quest.id }}/check_code" method="post">{% csrf_token %}
+                        <label class="d-block" for="code">Проверить код:</label>
+                        <input type="text" class="form-control w-50 d-inline mb-2"
+                               id="code" name="code" placeholder="Введите код">
+                        <input type="submit" class="btn btn-success" value="Проверить">
+                    </form>
+                    {% if message == 'right' %}
+                        <div class="alert alert-success">Код введён верно!</div>
+                    {% endif %}
+                    {% if message == 'wrong' %}
+                        <div class="alert alert-danger">Код введён неверно!</div>
+                    {% endif %}
+                    <p>Ответы:</p>
+                    {% for answer in answers %}
+                        {% if answer == "none" %}
+                            <span class="text-danger">Сектор {{ forloop.counter }}: код не найден</span>
+                        {% else %}
+                            <span class="text-success">Сектор {{ forloop.counter }}: {{ answer }}</span>
+                        {% endif %}
+                        <br>
+                    {% endfor %}
+                    До автоскипа осталось:
+                    <p id="puzzle-timer">{{ time_left.hours }}:{{ time_left.minutes }}:{{ time_left.seconds }}</p>
+                </div>
+                <div class="col-8">
+                    <h2 class="text-center">{{ puzzle.title }}</h2>
+                    {{ puzzle.html|safe }}
+                </div>
+            </div>
+
+        {% else %}
+            <h3>Квест ещё не начался</h3>
+            <p>До начала квеста осталось</p>
+            <span id="to-start-timer">
         {{ to_quest.days }} дней {{ to_quest.hours }} часов {{ to_quest.minutes }} минут {{ to_quest.seconds }} секунд
         </span>
+        {% endif %}
     {% endif %}
     <script>
         if ('{{ to_quest }}' !== 'past') {
@@ -79,7 +83,7 @@
 
                 setTimeout(startQuestTimer, 1000);
             }
-        } else {
+        } else if ('{{ complete }}' === 'False') {
             let Timer = document.getElementById("puzzle-timer").innerHTML;
             startPuzzleTimer();
 

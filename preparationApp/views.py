@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from . import models
 from django.contrib.auth.models import User
 from holdingApp.models import Member
@@ -166,8 +167,11 @@ def quest_info(request, quest_id):
 
 
 def add_quest(request):
+    print(request.POST['start_date'])
     quest = models.Quest(title=request.POST['title'], description=request.POST['description'],
-                         owner=get_user(request.user.username), start_date=datetime.now())
+                         owner=get_user(request.user.username),
+                         start_date=timezone.datetime.strptime(request.POST['start_date'], "%Y-%m-%dT%H:%M"))
+    quest.start_date -= timezone.timedelta(hours=3)
     quest.save()
     return redirect('/quests')
 

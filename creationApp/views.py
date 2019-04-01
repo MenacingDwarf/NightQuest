@@ -1,19 +1,24 @@
 from django.shortcuts import render, redirect
 from preparationApp.models import Quest
 from .models import Puzzle,Hint,Answer
+from django.utils import timezone
 
 
 def get_args(quest_id):
     quest = Quest.objects.get(id=quest_id)
+    quest.start_date += timezone.timedelta(hours=3)
     puzzles = list(filter(lambda p: p.quest == quest, Puzzle.objects.all()))
     return {'quest': quest, 'puzzles': puzzles, 'message': 'none'}
 
 
 def main_edit(request, quest_id):
     if request.method == 'POST':
+        print(request.POST['start_date'])
         quest = Quest.objects.get(id=quest_id)
         quest.title = request.POST['title']
         quest.description = request.POST['description']
+        quest.start_date = timezone.datetime.strptime(request.POST['start_date'], "%Y-%m-%dT%H:%M")
+        quest.start_date -= timezone.timedelta(hours=3)
         quest.save()
         request.session['message'] = 'Информация о квесте была изменена'
         return redirect('/edit/'+str(quest_id))

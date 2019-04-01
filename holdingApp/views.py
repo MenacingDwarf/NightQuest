@@ -59,7 +59,6 @@ def current_puzzle(request, quest_id):
         member = get_member(request.user.id, quest_id)
         args = make_args(request)
         args['time_left'] = parse_date(member.puzzle_start + timezone.timedelta(hours=2) - timezone.now())
-        print(args['time_left'])
         if args['time_left'] == 'past':
             next_puzzle(request.user.id, quest_id)
 

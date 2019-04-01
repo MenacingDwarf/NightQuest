@@ -8,6 +8,10 @@
         <label for="description">Описание квеста</label>
         <textarea class="form-control mb-2 w-50" rows="6"
                   id="description" name="description">{{ quest.description }}</textarea>
+        <label for="start_date">Дата начала</label>
+        <input type="datetime-local" class="form-control w-50 mb-2"
+               id="start_date" name="start_date"
+               value="{{ quest.start_date|date:"Y-m-d\TH:i" }}">
         <input type="submit" class="btn btn-primary mb-2" value="Сохранить">
     </form>
     <button type="button" id="gifsBtn" class="btn btn-dark mb-2"

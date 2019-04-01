@@ -1,86 +1,99 @@
 {% extends 'holdingApp/mainWrapper.html' %}
 {% block title %}Текущая загадка{% endblock %}
 {% block content %}
-    {% if to_quest == 'started' %}
-        Квест начался!
+    {% if to_quest == 'past' %}
+        <div class="row">
+            <div class="col-4">
+                До автоскипа осталось:
+                <p id="puzzle-timer">{{ time_left.hours }}:{{ time_left.minutes }}:{{ time_left.seconds }}</p>
+            </div>
+            <div class="col-8">
+                <h2 class="text-center">{{ puzzle.title }}</h2>
+                {{ puzzle.html|safe }}
+            </div>
+        </div>
+
     {% else %}
         <h3>Квест ещё не начался</h3>
         <p>До начала квеста осталось</p>
-        <span id="timer">
+        <span id="to-start-timer">
         {{ to_quest.days }} дней {{ to_quest.hours }} часов {{ to_quest.minutes }} минут {{ to_quest.seconds }} секунд
         </span>
     {% endif %}
     <script>
-        let Timer = document.getElementById("timer").innerHTML;
+        if ('{{ to_quest }}' !== 'past') {
+            let Timer = document.getElementById("to-start-timer").innerHTML;
+            startQuestTimer();
 
-        if ('{{ to_quest }}' !== 'started') {
-            startQuestTimer()
-        }
-        else startPuzzleTimer();
+            function startQuestTimer() {
+                let tick = function (Timer) {
+                    let arr = Timer.split(' дней ');
+                    let days = arr[0];
+                    arr = arr[1].split(' часов ');
+                    let hours = arr[0];
+                    arr = arr[1].split(' минут ');
+                    let minutes = arr[0];
+                    arr = arr[1].split(' секунд');
+                    let seconds = arr[0];
+                    if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+                        location.reload();
+                        return;
+                    } else seconds -= 1;
+                    if (Number.parseInt(seconds) === -1) {
+                        minutes -= 1;
+                        seconds = "59";
+                    }
+                    if (Number.parseInt(minutes) === -1) {
+                        hours -= 1;
+                        minutes = "59";
+                    }
+                    if (Number.parseInt(hours) === -1) {
+                        days -= 1;
+                        hours = "23";
+                    }
+                    return days + ' дней ' + hours + ' часов ' + minutes + ' минут ' + seconds + ' секунд'
+                };
+                Timer = tick(Timer);
+                document.getElementById("to-start-timer").innerHTML = Timer;
 
-        function startQuestTimer() {
-            let tick = function (Timer) {
-                let arr = Timer.split(' дней ');
-                let days = arr[0];
-                arr = arr[1].split(' часов ');
-                let hours = arr[0];
-                arr = arr[1].split(' минут ');
-                let minutes = arr[0];
-                arr = arr[1].split(' секунд');
-                let seconds = arr[0];
-                if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
-                    location.reload();
-                    return;
-                } else seconds -= 1;
-                if (Number.parseInt(seconds) === -1) {
-                    minutes -= 1;
-                    seconds = "59";
-                }
-                if (Number.parseInt(minutes) === -1) {
-                    hours -= 1;
-                    minutes = "59";
-                }
-                if (Number.parseInt(hours) === -1) {
-                    days -= 1;
-                    hours = "23";
-                }
-                return days + ' дней ' + hours + ' часов ' + minutes + ' минут ' + seconds + ' секунд'
-            };
-            Timer = tick(Timer);
-            document.getElementById("timer").innerHTML = Timer;
+                setTimeout(startQuestTimer, 1000);
+            }
+        } else {
+            let Timer = document.getElementById("puzzle-timer").innerHTML;
+            startPuzzleTimer();
 
-            setTimeout(startQuestTimer, 990);
-        }
-        function startPuzzleTimer() {
-            let tick = function (Timer) {
-                let arr = Timer.split(':');
-                let hours = arr[0];
-                let minutes = arr[1];
-                let seconds = arr[2];
-                if (hours === 0 && minutes === 0 && seconds === 0) {
-                    location.reload();
-                    return;
-                } else seconds -= 1;
-                if (Number.parseInt(seconds) === -1) {
-                    minutes -= 1;
-                    seconds = "59";
-                }
-                if (Number.parseInt(minutes) === -1) {
-                    hours -= 1;
-                    minutes = "59";
-                }
-                return formatTime(hours) + ":" + formatTime(minutes) + ":" + formatTime(seconds);
-            };
-            Timer = tick(Timer);
-            document.getElementById("skip-time").innerHTML = Timer;
+            function startPuzzleTimer() {
+                let tick = function (Timer) {
+                    console.log('tick');
+                    let arr = Timer.split(':');
+                    let hours = arr[0];
+                    let minutes = arr[1];
+                    let seconds = arr[2];
+                    if (hours === 0 && minutes === 0 && seconds === 0) {
+                        location.reload();
+                        return;
+                    } else seconds -= 1;
+                    if (Number.parseInt(seconds) === -1) {
+                        minutes -= 1;
+                        seconds = "59";
+                    }
+                    if (Number.parseInt(minutes) === -1) {
+                        hours -= 1;
+                        minutes = "59";
+                    }
+                    return formatTime(hours) + ":" + formatTime(minutes) + ":" + formatTime(seconds);
+                };
+                Timer = tick(Timer);
+                document.getElementById("puzzle-timer").innerHTML = Timer;
 
-            setTimeout(startPuzzleTimer, 990);
-        }
+                setTimeout(startPuzzleTimer, 1000);
+            }
 
-        function formatTime(time) {
-            time = Number.parseInt(time);
-            if (time < 10) return "0" + time;
-            else return time
+            function formatTime(time) {
+                time = Number.parseInt(time);
+                if (time < 10) return "0" + time;
+                else return time
+            }
         }
     </script>
 {% endblock %}

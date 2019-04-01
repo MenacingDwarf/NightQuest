@@ -4,7 +4,7 @@ from preparationApp.models import Quest
 
 
 def parse_date(timedelta):
-    if timedelta.seconds < 0:
+    if timedelta.days < 0:
         return 'started'
     else:
         days = int(timedelta.days)

@@ -20,6 +20,9 @@ class Quest(models.Model):
     description = models.TextField()
     owner = models.ForeignKey(User, models.CASCADE)
 
+    def all_puzzles(self):
+        return list(filter(lambda p: p.quest == self, Puzzle.objects.all()))
+
     def free_puzzles(self):
         puzzles = []
         for puzzle in list(filter(lambda p: p.quest == self, Puzzle.objects.all())):

@@ -13,8 +13,8 @@ class Member(models.Model):
         if self.quest.free_puzzles():
             self.current_puzzle = random.choice(self.quest.free_puzzles())
             self.save()
-        else:
-            self.current_puzzle = random.choice(list(filter(lambda p: p.quest == self.quest, Puzzle.objects.all())))
+        elif self.quest.all_puzzles():
+            self.current_puzzle = random.choice(self.quest.all_puzzles())
             self.save()
 
     class Meta:

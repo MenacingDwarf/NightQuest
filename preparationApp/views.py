@@ -154,6 +154,14 @@ def quest_info(request, quest_id):
     args['requests'] = list(filter(lambda r: models.Quest.objects.get(id=quest_id) == r.quest,
                                    models.Request.objects.all()))
 
+    reg_teams = list(
+        filter(lambda m: get_user(request.user.username) in m.team.members.all() and m.quest == args['quest'],
+               Member.objects.all()))
+    if not reg_teams:
+        args['registered'] = False
+    else:
+        args['registered'] = reg_teams[0].team.title
+
     return render(request, 'preparationApp/questInfoPage.html', args)
 
 

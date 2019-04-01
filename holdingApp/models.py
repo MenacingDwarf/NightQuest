@@ -9,6 +9,8 @@ class Member(models.Model):
     quest = models.ForeignKey('preparationApp.Quest', models.CASCADE)
     current_puzzle = models.ForeignKey('creationApp.Puzzle', models.SET_DEFAULT, default=1)
     puzzle_start = models.DateTimeField(default=timezone.now)
+    answers = models.ManyToManyField('creationApp.Answer', related_name="users")
+    hints = models.ManyToManyField('creationApp.Hint', related_name="users")
 
     def give_puzzle(self):
         if self.quest.free_puzzles():

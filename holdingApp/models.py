@@ -7,11 +7,11 @@ import random
 class Member(models.Model):
     team = models.ForeignKey('preparationApp.Team', models.CASCADE)
     quest = models.ForeignKey('preparationApp.Quest', models.CASCADE)
-    current_puzzle = models.ForeignKey('creationApp.Puzzle', models.SET_DEFAULT, default=1)
+    current_puzzle = models.ForeignKey('creationApp.Puzzle', models.SET_DEFAULT, default=None, blank=True, null=True)
     puzzle_start = models.DateTimeField(default=timezone.now)
-    answers = models.ManyToManyField('creationApp.Answer', related_name="members", null=True)
-    hints = models.ManyToManyField('creationApp.Hint', related_name="members", null=True)
-    puzzles = models.ManyToManyField('creationApp.Puzzle', related_name="members", null=True)
+    answers = models.ManyToManyField('creationApp.Answer', related_name="members", blank=True)
+    hints = models.ManyToManyField('creationApp.Hint', related_name="members", blank=True)
+    puzzles = models.ManyToManyField('creationApp.Puzzle', related_name="members", blank=True)
     complete = models.BooleanField(default=False)
 
     def give_puzzle(self):

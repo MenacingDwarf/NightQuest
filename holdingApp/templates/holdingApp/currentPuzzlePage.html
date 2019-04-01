@@ -14,22 +14,25 @@
                         <input type="submit" class="btn btn-success" value="Проверить">
                     </form>
                     {% if message == 'right' %}
-                        <div class="alert alert-success">Код введён верно!</div>
+                        <div class="alert alert-success w-75">Код введён верно!</div>
                     {% endif %}
                     {% if message == 'wrong' %}
-                        <div class="alert alert-danger">Код введён неверно!</div>
+                        <div class="alert alert-danger w-75">Код введён неверно!</div>
                     {% endif %}
                     <p>Ответы:</p>
                     {% for answer in answers %}
                         {% if answer == "none" %}
-                            <span class="text-danger">Сектор {{ forloop.counter }}: код не найден</span>
+                            <p class="text-danger">Сектор {{ forloop.counter }}: код не найден</p>
                         {% else %}
-                            <span class="text-success">Сектор {{ forloop.counter }}: {{ answer }}</span>
+                            <p class="text-success">Сектор {{ forloop.counter }}: {{ answer }}</p>
                         {% endif %}
-                        <br>
                     {% endfor %}
-                    До автоскипа осталось:
-                    <p id="puzzle-timer">{{ time_left.hours }}:{{ time_left.minutes }}:{{ time_left.seconds }}</p>
+                    <div class="alert-dark alert w-75 text-center">
+                        <h6>Автопереход на следущий уровень через:</h6>
+                        <span id="puzzle-timer">
+                            {{ time_left.hours }}:{{ time_left.minutes }}:{{ time_left.seconds }}
+                        </span>
+                    </div>
                 </div>
                 <div class="col-8">
                     <h2 class="text-center">{{ puzzle.title }}</h2>
@@ -40,9 +43,10 @@
         {% else %}
             <h3>Квест ещё не начался</h3>
             <p>До начала квеста осталось</p>
-            <span id="to-start-timer">
-        {{ to_quest.days }} дней {{ to_quest.hours }} часов {{ to_quest.minutes }} минут {{ to_quest.seconds }} секунд
-        </span>
+            <p id="to-start-timer" class="text-center">
+                {{ to_quest.days }} дней {{ to_quest.hours }} часов
+                {{ to_quest.minutes }} минут {{ to_quest.seconds }} секунд
+            </p>
         {% endif %}
     {% endif %}
     <script>

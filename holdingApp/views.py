@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.contrib.auth.models import User
 from preparationApp.models import Quest
-from creationApp.models import Answer
+from creationApp.models import Answer,Hint
 from .models import Member
 
 
@@ -43,6 +43,21 @@ def get_answers(user_id, quest_id):
     return answers
 
 
+def get_hints(user_id, quest_id):
+    member = get_member(user_id, quest_id)
+    hints = []
+    for hint in list(filter(lambda h: h.puzzle == member.current_puzzle, Hint.objects.all())):
+        item = {'fine_minutes': hint.fine_minutes, 'html': hint.html,
+                'open_time': parse_date(
+                    member.puzzle_start + timezone.timedelta(minutes=hint.open_minutes) - timezone.now())}
+        if hint in member.hints.all():
+            item['used'] = True
+        else:
+            item['used'] = False
+        hints.append(item)
+    return hints
+
+
 def next_puzzle(user_id, quest_id):
     member = get_member(user_id, quest_id)
     member.puzzles.add(member.current_puzzle)
@@ -67,6 +82,7 @@ def current_puzzle(request, quest_id):
         args['complete'] = member.complete
         args['puzzle'] = member.current_puzzle
         args['answers'] = get_answers(request.user.id, quest_id)
+        args['hints'] = get_hints(request.user.id, quest_id)
 
         return render(request, 'holdingApp/currentPuzzlePage.html', args)
 

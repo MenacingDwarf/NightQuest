@@ -38,6 +38,9 @@
                     <h2 class="text-center">{{ puzzle.title }}</h2>
                     {{ puzzle.html|safe }}
                 </div>
+            {% for hint in hints %}
+                <p>{{ hint.html }},{{ hint.open_time }};</p>
+            {% endfor %}
             </div>
 
         {% else %}

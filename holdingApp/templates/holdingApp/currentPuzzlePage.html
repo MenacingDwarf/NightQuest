@@ -37,10 +37,28 @@
                 <div class="col-8">
                     <h2 class="text-center">{{ puzzle.title }}</h2>
                     {{ puzzle.html|safe }}
+                    {% for hint in hints %}
+                        <p>
+                        <h5>Подказка {{ forloop.counter }}</h5>
+                        {% if hint.used == True %}
+                            <p>{{ hint.html }}</p>
+                        {% else %}
+                            <div class="text-danger">Цена: {{ hint.fine_minutes }} штрафных минут</div>
+                            {% if hint.open_time != 'past' %}
+                                Откроется через:
+                                <span id="hint{{ forloop.counter }}">
+                                    {{ hint.open_time.hours }}:{{ hint.open_time.minutes }}:{{ hint.open_time.seconds }}
+                                </span>
+                            {% else %}
+                                <form action="{{ quest.id }}/take_hint" method="post">{% csrf_token %}
+                                    <input type="hidden" name="id" value="{{ hint.id }}">
+                                    <input type="submit" class="btn btn-primary" value="Взять подсказку">
+                                </form>
+                            {% endif %}
+                        {% endif %}
+                        </p>
+                    {% endfor %}
                 </div>
-            {% for hint in hints %}
-                <p>{{ hint.html }},{{ hint.open_time }};</p>
-            {% endfor %}
             </div>
 
         {% else %}
@@ -118,6 +136,12 @@
                 Timer = tick(Timer);
                 document.getElementById("puzzle-timer").innerHTML = Timer;
 
+                for (let i = 1; i <={{ hints|length }}; i++) {
+                    let hint = document.getElementById("hint" + i);
+                    if (hint) {
+                        hint.innerHTML = tick(hint.innerHTML);
+                    }
+                }
                 setTimeout(startPuzzleTimer, 1000);
             }
 

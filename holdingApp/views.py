@@ -47,7 +47,7 @@ def get_hints(user_id, quest_id):
     member = get_member(user_id, quest_id)
     hints = []
     for hint in list(filter(lambda h: h.puzzle == member.current_puzzle, Hint.objects.all())):
-        item = {'fine_minutes': hint.fine_minutes, 'html': hint.html,
+        item = {'id': hint.id, 'fine_minutes': hint.fine_minutes, 'html': hint.html,
                 'open_time': parse_date(
                     member.puzzle_start + timezone.timedelta(minutes=hint.open_minutes) - timezone.now())}
         if hint in member.hints.all():
@@ -99,3 +99,10 @@ def check_code(request, quest_id):
     if len(list(filter(lambda a: a.puzzle == member.current_puzzle, member.answers.all()))) == len(answers):
         next_puzzle(request.user.id, quest_id)
     return redirect('/quest/'+str(quest_id))
+
+
+def take_hint(request, quest_id):
+    member = get_member(request.user.id, quest_id)
+    member.hints.add(Hint.objects.get(id=request.POST['id']))
+    member.save()
+    return redirect('/quest/' + str(quest_id))

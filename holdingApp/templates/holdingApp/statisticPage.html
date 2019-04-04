@@ -1,0 +1,27 @@
+{% extends 'holdingApp/mainWrapper.html' %}
+{% block title %}Статистика{% endblock %}
+{% block content %}
+    <table class="table">
+        <tr>
+            <td>№</td>
+            <td>Название команды</td>
+            <td>Текущая загадка</td>
+            <td>Пройдено этапов</td>
+            <td>Время прохождения</td>
+            <td>Штрафное время</td>
+            <td>Общее время</td>
+        </tr>
+        {% for member in members %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ member.team }}</td>
+                <td>{{ member.puzzle }}
+                <td>{{ member.puzzles }}</td>
+                <td>{{ member.time.hours }}ч {{ member.time.minutes }}м {{ member.time.seconds }}с</td>
+                <td>{{ member.fine }} минут</td>
+                <td>{{ member.summary_time.hours }}ч {{ member.summary_time.minutes }}м
+                    {{ member.summary_time.seconds }}с</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

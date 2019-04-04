@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.contrib.auth.models import User
 from preparationApp.models import Quest
-from creationApp.models import Answer,Hint
+from creationApp.models import Answer, Hint
 from .models import Member
 
 
-def make_args(request):
-    args = {'message': 'none'}
+def make_args(request, quest_id):
+    args = {'quest': Quest.objects.get(id=quest_id), 'message': 'none'}
     if request.session.get('message'):
         args['message'] = request.session.get('message')
         request.session.pop('message')
@@ -72,13 +72,12 @@ def current_puzzle(request, quest_id):
         return redirect('/')
     else:
         member = get_member(request.user.id, quest_id)
-        args = make_args(request)
+        args = make_args(request, quest_id)
         args['time_left'] = parse_date(member.puzzle_start + timezone.timedelta(hours=2) - timezone.now())
         if args['time_left'] == 'past':
             next_puzzle(request.user.id, quest_id)
 
         args['to_quest'] = parse_date(Quest.objects.get(id=quest_id).start_date - timezone.now())
-        args['quest'] = Quest.objects.get(id=quest_id)
         args['complete'] = member.complete
         args['puzzle'] = member.current_puzzle
         args['answers'] = get_answers(request.user.id, quest_id)
@@ -106,3 +105,22 @@ def take_hint(request, quest_id):
     member.hints.add(Hint.objects.get(id=request.POST['id']))
     member.save()
     return redirect('/quest/' + str(quest_id))
+
+
+def get_statistic(request, quest_id):
+    members = list(filter(lambda m: m.quest == Quest.objects.get(id=quest_id), Member.objects.all()))
+    args = make_args(request, quest_id)
+    args['members'] = []
+    for member in members:
+        time = timezone.now() - Quest.objects.get(id=quest_id).start_date
+        item = {'team': member.team.title,
+                'fine': sum([hint.fine_minutes for hint in member.hints.all()]),
+                'time': parse_date(time),
+                'puzzles': len(member.puzzles.all()),
+                'puzzle': member.current_puzzle.title}
+        item['time']['hours'] += item['time']['days'] * 24
+        item['summary_time'] = parse_date(time + timezone.timedelta(minutes=item['fine']))
+        item['summary_time']['hours'] += item['summary_time']['days'] * 24
+        args['members'].append(item)
+
+    return render(request, 'holdingApp/statisticPage.html', args)

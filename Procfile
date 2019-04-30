@@ -1,1 +1,1 @@
-web: gunicorn locallibrary.wsgi --log-file -pip
+web: gunicorn NightQuest.wsgi --log-file -

@@ -77,14 +77,18 @@ def personal_area(request):
 
 
 def teams(request):
-    args = make_args(request)
-    args['teams_list'] = list(filter(lambda t: get_user(request.user.username) in t.members.all(),
-                                     models.Team.objects.all()))
+    if request.user.is_authenticated:
+        args = make_args(request)
+        args['teams_list'] = list(filter(lambda t: get_user(request.user.username) in t.members.all(),
+                                         models.Team.objects.all()))
 
-    args['invites_list'] = list(filter(lambda i: get_user(request.user.username) == i.new_member,
-                                       models.Invite.objects.all()))
+        args['invites_list'] = list(filter(lambda i: get_user(request.user.username) == i.new_member,
+                                           models.Invite.objects.all()))
 
-    return render(request, 'preparationApp/teamsPage.html', args)
+        return render(request, 'preparationApp/teamsPage.html', args)
+    else:
+        request.session['message'] = 'Необходима авторизация'
+        return redirect('/login')
 
 
 def team_info(request, team_id):
@@ -167,13 +171,17 @@ def quest_info(request, quest_id):
 
 
 def add_quest(request):
-    print(request.POST['start_date'])
-    quest = models.Quest(title=request.POST['title'], description=request.POST['description'],
-                         owner=get_user(request.user.username),
-                         start_date=timezone.datetime.strptime(request.POST['start_date'], "%Y-%m-%dT%H:%M"))
-    quest.start_date -= timezone.timedelta(hours=3)
-    quest.save()
-    return redirect('/quests')
+    if request.user.is_authenticated:
+        print(request.POST['start_date'])
+        quest = models.Quest(title=request.POST['title'], description=request.POST['description'],
+                             owner=get_user(request.user.username),
+                             start_date=timezone.datetime.strptime(request.POST['start_date'], "%Y-%m-%dT%H:%M"))
+        quest.start_date -= timezone.timedelta(hours=3)
+        quest.save()
+        return redirect('/quests')
+    else:
+        request.session['message'] = 'Необходима авторизация'
+        return redirect('/login')
 
 
 def make_quest_request(request):

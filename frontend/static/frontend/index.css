@@ -1,59 +1,102 @@
 body {
     background-color: black;
     color: white;
+    font-size: 20px;
 }
-.header:after {
-  content: '';
-  position: absolute;
-  left: 20%;
-  width: 60%;
-  height: 60%;
-  background: gray;
+
+.blur {
+    content: '';
+    position: absolute;
+    left: 50%;
+    margin-left: -400px;
+    width: 800px;
+    height: 800px;
+    background: gray;
     border-radius: 50%;
-  top: 30%;
-  opacity: .1;
-  filter: blur(50px);
+    top: 20%;
+    opacity: .1;
+    filter: blur(50px);
 }
+
 .wrap {
-    width: 80%;
+    width: 1200px;
     margin: auto;
 }
+
 .header {
     width: 100%;
     display: flex;
     height: 200px;
 }
+
 .header > .logo {
     width: 25%;
 }
+
 .logo > img {
-    width: 100%;
+    height: 100%;
 }
-.header > .buttons {
+
+.header-right {
+    height: 100%;
     width: 75%;
+}
+
+.header-text {
+    text-align: right;
+    font-size: 1.5em;
+    font-style: italic;
+}
+
+.header-right > .buttons {
     display: flex;
     justify-content: flex-end;
+    height: 50%;
 }
+
 .buttons > li {
     list-style-type: none;
     height: 1.2em;
 }
-.buttons > li > .button{
+
+.buttons > li.register {
+    text-align: center;
+    background-color: #8D161A;
+    text-transform: uppercase;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.buttons > li.register:hover {
+    color: black;
+}
+
+.buttons > li > .button {
     text-transform: uppercase;
     text-align: center;
     padding: 10px;
     height: 1em;
 }
+
 .buttons > li > .underline {
     height: 0.2em;
     background-color: gray;
 }
+
 .buttons > li:hover {
     cursor: pointer;
 }
+
 .buttons > li:hover .button {
     background-color: gray;
 }
+
 .buttons > li:hover .underline {
-    background-color: red;
+    background-color: #8D161A;
+}
+
+@media screen and (max-width: 1200px) {
+    .wrap {
+        width: 100%;
+    }
 }

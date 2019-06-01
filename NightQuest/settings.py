@@ -24,14 +24,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', ')$9pr4uc%*%wdn+*8gxo1)6f-dr1&((v4n3clwl9pkosc+&j_p')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['nqapp.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['nqapp.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'frontend',
     'creationApp',
     'holdingApp',
     'preparationApp',
@@ -45,7 +46,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -124,11 +124,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 # The absolute path to the directory where collectstatic will collect static files for deployment.
-STATIC_ROOT = os.path.join(BASE_DIR, 'statiscfiles')
 
 STATIC_URL = '/static/'
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)

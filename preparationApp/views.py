@@ -6,6 +6,8 @@ from holdingApp.models import Member
 from django.contrib.auth import authenticate, logout, login
 from datetime import datetime
 
+def test(request):
+    return render(request, 'frontend/index.html')
 
 def get_user(name):
     return User.objects.get(username=name)

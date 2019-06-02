@@ -4,32 +4,32 @@ import logo from "../NQlogo.png";
 class Header extends Component {
     render() {
         return (
-            <div className="header">
+            <header className="header">
                 <div className="logo">
                     <img src={logo} alt="картинка"/>
                 </div>
                 <div className="header-right">
                     <ul className="buttons">
-                        <li>
-                            <div className="button">Главная</div>
+                        <li onClick={() => window.location = "/"}>
+                            <div className="menu-button">Главная</div>
                             <div className="underline"/>
                         </li>
-                        <li>
-                            <div className="button">Команды</div>
+                        <li onClick={() => window.location = "/teams"}>
+                            <div className="menu-button">Команды</div>
                             <div className="underline"/>
                         </li>
-                        <li>
-                            <div className="button">Квесты</div>
+                        <li onClick={() => window.location = "/quests"}>
+                            <div className="menu-button">Квесты</div>
                             <div className="underline"/>
                         </li>
-                        <li className="register">
+                        <li onClick={() => window.location = "/register"} className="register-button">
                             Зарегистрироваться
                         </li>
                     </ul>
                     <div className="header-text">Night Quest...</div>
                 </div>
 
-            </div>
+            </header>
         )
     }
 }

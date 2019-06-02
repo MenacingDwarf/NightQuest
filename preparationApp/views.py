@@ -4,6 +4,7 @@ from . import models
 from django.contrib.auth.models import User
 from holdingApp.models import Member
 from django.contrib.auth import authenticate, logout, login
+from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 
 def test(request):
@@ -22,13 +23,13 @@ def make_args(request):
 
 
 def main_page(request):
-    return render(request, 'preparationApp/startPage.html', make_args(request))
+    return render(request, 'frontend/index.html', make_args(request))
 
-
+@csrf_exempt
 def log_in(request):
     if request.method == 'GET':
         args = make_args(request)
-        return render(request, 'preparationApp/loginPage.html', args)
+        return render(request, 'frontend/index.html', args)
     else:
         try:
             user = authenticate(username=request.POST['username'], password=request.POST['password'])
@@ -43,11 +44,11 @@ def log_in(request):
             request.session['message'] = 'Пользователь не зарегистрирован'
             return redirect('/login/')
 
-
+@csrf_exempt
 def register(request):
     if request.method == 'GET':
         args = make_args(request)
-        return render(request, 'preparationApp/registerPage.html', args)
+        return render(request, 'frontend/index.html', args)
     else:
         try:
             user = User.objects.get(username=request.POST['username'])

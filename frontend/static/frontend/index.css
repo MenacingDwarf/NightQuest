@@ -1,9 +1,42 @@
+* {
+    padding: 0;
+    margin: 0;
+}
 body {
     background-color: black;
     color: white;
-    font-size: 20px;
+    font-size: 18px;
 }
-
+.line {
+    width: 100%;
+    border-top: 2px solid #8D161A;
+    margin-bottom: 0.5em;
+}
+input[type="text"],
+input[type="password"]{
+    display: block;
+    width: 100%;
+    background-color: darkgrey;
+    border: solid #555555 1px;
+    margin-bottom: 0.5em;
+}
+input[type="submit"].register-button {
+    text-align: center;
+    background-color: #8D161A;
+    text-transform: uppercase;
+    padding: 0.5em;
+    font-weight: bold;
+    border: 0;
+    color: white;
+    margin-top: 0.5em;
+}
+.additional-text {
+    color: gray;
+    font-size: 0.8em;
+}
+input[type="submit"].register-button:hover {
+    background-color: #9E272B;
+}
 .blur {
     content: '';
     position: absolute;
@@ -11,7 +44,7 @@ body {
     margin-left: -400px;
     width: 800px;
     height: 800px;
-    background: gray;
+    background: #555555;
     border-radius: 50%;
     top: 20%;
     opacity: .1;
@@ -19,7 +52,7 @@ body {
 }
 
 .wrap {
-    width: 1200px;
+    width: 1140px;
     margin: auto;
 }
 
@@ -56,26 +89,26 @@ body {
 
 .buttons > li {
     list-style-type: none;
-    height: 1.2em;
+    height: 2.2em;
 }
 
-.buttons > li.register {
+.buttons > li.register-button {
     text-align: center;
     background-color: #8D161A;
     text-transform: uppercase;
-    padding: 10px;
+    padding: 0.5em;
     font-weight: bold;
 }
 
-.buttons > li.register:hover {
-    color: black;
+.buttons > li.register-button:hover {
+    background-color: #9E272B;
 }
 
-.buttons > li > .button {
+.buttons > li > .menu-button {
     text-transform: uppercase;
     text-align: center;
-    padding: 10px;
-    height: 1em;
+    padding: 0.5em;
+    height: 2em;
 }
 
 .buttons > li > .underline {
@@ -87,8 +120,8 @@ body {
     cursor: pointer;
 }
 
-.buttons > li:hover .button {
-    background-color: gray;
+.buttons > li:hover .menu-button {
+    background-color: #555555;
 }
 
 .buttons > li:hover .underline {
@@ -97,6 +130,6 @@ body {
 
 @media screen and (max-width: 1200px) {
     .wrap {
-        width: 100%;
+        width: 95%;
     }
 }

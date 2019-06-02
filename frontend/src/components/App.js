@@ -12,7 +12,7 @@ class App extends Component {
             <div className="wrap">
                 <BrowserRouter>
                     <div className="blur"/>
-                    <Header/>
+                    <Route path={"/"} component={Header} />
                     <Route exact path={"/"} component={Home} />
                     <Route path={"/register"} component={Register}/>
                     <Route path={"/login"} component={Register}/>

@@ -10,7 +10,7 @@ class Header extends Component {
                 </div>
                 <div className="header-right">
                     <ul className="buttons">
-                        <li onClick={() => window.location = "/"}>
+                        <li onClick={() => this.props.history.push("/")}>
                             <div className="menu-button">Главная</div>
                             <div className="underline"/>
                         </li>
@@ -22,7 +22,7 @@ class Header extends Component {
                             <div className="menu-button">Квесты</div>
                             <div className="underline"/>
                         </li>
-                        <li onClick={() => window.location = "/register"} className="register-button">
+                        <li onClick={() => this.props.history.push("/register")} className="register-button">
                             Зарегистрироваться
                         </li>
                     </ul>

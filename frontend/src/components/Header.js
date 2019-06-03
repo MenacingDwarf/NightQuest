@@ -3,6 +3,15 @@ import logo from "../NQlogo.png";
 
 class Header extends Component {
     render() {
+        let register_button = this.props.is_auth ? (
+            <li onClick={() => this.props.history.push("/personal_area")} className="register-button">
+                Личный кабинет
+            </li>
+        ) : (
+            <li onClick={() => this.props.history.push("/register")} className="register-button">
+                Зарегистрироваться
+            </li>
+        );
         return (
             <header className="header">
                 <div className="logo">
@@ -22,9 +31,7 @@ class Header extends Component {
                             <div className="menu-button">Квесты</div>
                             <div className="underline"/>
                         </li>
-                        <li onClick={() => this.props.history.push("/register")} className="register-button">
-                            Зарегистрироваться
-                        </li>
+                        {register_button}
                     </ul>
                     <div className="header-text">Night Quest...</div>
                 </div>

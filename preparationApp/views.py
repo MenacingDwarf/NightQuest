@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from holdingApp.models import Member
 from django.contrib.auth import authenticate, logout, login
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.core import serializers
+from django.forms.models import model_to_dict
 from datetime import datetime
 
 def test(request):
@@ -60,6 +63,13 @@ def register(request):
             login(request, user)
             print('register', request.POST['username'])
             return redirect('/')
+
+
+def get_user_info(request):
+    if request.user.is_authenticated:
+        return JsonResponse({"is_auth": True, "user_info": model_to_dict(request.user)})
+    else:
+        return JsonResponse({"is_auth": False})
 
 
 def personal_area(request):

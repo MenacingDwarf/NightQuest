@@ -10,8 +10,6 @@ from django.core import serializers
 from django.forms.models import model_to_dict
 from datetime import datetime
 
-def test(request):
-    return render(request, 'frontend/index.html')
 
 def get_user(name):
     return User.objects.get(username=name)
@@ -27,6 +25,7 @@ def make_args(request):
 
 def main_page(request):
     return render(request, 'frontend/index.html', make_args(request))
+
 
 @csrf_exempt
 def log_in(request):
@@ -46,6 +45,7 @@ def log_in(request):
         except ValueError:
             request.session['message'] = 'Пользователь не зарегистрирован'
             return redirect('/login/')
+
 
 @csrf_exempt
 def register(request):
@@ -72,11 +72,11 @@ def get_user_info(request):
         return JsonResponse({"is_auth": False})
 
 
+@csrf_exempt
 def personal_area(request):
     if request.user.is_authenticated:
         if request.method == "GET":
-            args = make_args(request)
-            return render(request, 'preparationApp/personalPage.html', args)
+            return render(request, 'frontend/index.html')
         else:
             user = get_user(request.user.username)
             user.first_name = request.POST['f_name']
@@ -84,7 +84,7 @@ def personal_area(request):
             user.email = request.POST['email']
             user.save()
             request.session['message'] = 'Изменения были сохранены'
-            return redirect('/personal/')
+            return redirect('/personal_area/')
     else:
         return redirect('/login')
 
@@ -215,6 +215,7 @@ def submit_quest_request(request):
     return redirect('/quests')
 
 
+@csrf_exempt
 def log_out(request):
     logout(request)
-    return redirect('/')
+    return JsonResponse({"is_auth": False})

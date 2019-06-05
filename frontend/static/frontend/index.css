@@ -13,11 +13,13 @@ body {
     margin-bottom: 0.5em;
 }
 input[type="text"],
-input[type="password"]{
+input[type="password"],
+input[type="email"]{
     display: block;
     width: 100%;
     background-color: darkgrey;
     border: solid #555555 1px;
+    padding: 0.2em;
     margin-bottom: 0.5em;
 }
 input[type="submit"].register-button {
@@ -46,7 +48,7 @@ input[type="submit"].register-button:hover {
     height: 800px;
     background: #555555;
     border-radius: 50%;
-    top: 20%;
+    top: 15%;
     opacity: .1;
     filter: blur(50px);
 }
@@ -81,7 +83,7 @@ input[type="submit"].register-button:hover {
     font-style: italic;
 }
 
-.header-right > .buttons {
+.buttons {
     display: flex;
     justify-content: flex-end;
     height: 50%;

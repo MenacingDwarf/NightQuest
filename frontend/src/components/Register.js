@@ -11,12 +11,12 @@ class Register extends Component {
                         <div className="row">
                             <div className="col-8">
                                 <form action="/register/" method="post">
-                                    <label htmlFor="username">Выберите имя пользователя</label>
-                                    <input type="text" name={"username"} id={"username"}/>
-                                    <label htmlFor="email">Введите электронный адрес</label>
-                                    <input type="text" name={"email"} id={"email"}/>
-                                    <label htmlFor="password">Выберите пароль</label>
-                                    <input type="password" name={"password"} id={"password"}/>
+                                    <label htmlFor="register-username">Выберите имя пользователя</label>
+                                    <input type="text" name={"username"} id={"register-username"}/>
+                                    <label htmlFor="register-email">Введите электронный адрес</label>
+                                    <input type="text" name={"email"} id={"register-email"}/>
+                                    <label htmlFor="register-password">Выберите пароль</label>
+                                    <input type="password" name={"password"} id={"register-password"}/>
                                     <input type="submit" className={"register-button"} value={"Зарегистрироваться"}/>
                                 </form>
                             </div>

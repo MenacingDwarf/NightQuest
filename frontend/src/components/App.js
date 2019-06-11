@@ -59,6 +59,7 @@ class App extends Component {
                     <Route path={"/personal_area"} render={(routeProps) => (
                         <PersonalArea {...routeProps} user_info={this.state.user_info}/>
                     )}/>
+                    <Route path={"/teams"} component={Teams}/>
                 </BrowserRouter>
             </div>
         )

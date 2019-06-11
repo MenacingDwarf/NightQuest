@@ -130,6 +130,21 @@ input[type="submit"].register-button:hover {
     background-color: #8D161A;
 }
 
+.new_team-button {
+    text-align: center;
+    background-color: #8D161A;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: 0;
+    color: white;
+    float: right;
+    padding: 0.1em 0.2em;
+}
+.new_team-button:hover {
+    background-color: #9E272B;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 1200px) {
     .wrap {
         width: 95%;

@@ -104,6 +104,22 @@ def teams(request):
         return redirect('/login')
 
 
+def teams_info(request):
+    if request.method == "GET":
+        args = dict()
+        args['teams_list'] = serializers.serialize("json", list(
+            filter(lambda t: get_user(request.user.username) in t.members.all(),
+                   models.Team.objects.all())), ensure_ascii=False)
+
+        args['invites_list'] = serializers.serialize("json", list(
+            filter(lambda i: get_user(request.user.username) == i.new_member,
+                   models.Invite.objects.all())), ensure_ascii=False)
+
+        return JsonResponse(args)
+    else:
+        return JsonResponse({})
+
+
 def team_info(request, team_id):
     args = make_args(request)
     item = models.Team.objects.get(id=team_id)

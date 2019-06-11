@@ -13,7 +13,7 @@ class HeaderButtons extends Component {
                     <div className="menu-button">Главная</div>
                     <div className="underline"/>
                 </li>
-                <li onClick={() => window.location = "/teams"}>
+                <li onClick={() => this.props.history.push("/teams")}>
                     <div className="menu-button">Команды</div>
                     <div className="underline"/>
                 </li>

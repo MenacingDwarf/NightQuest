@@ -5,8 +5,8 @@ class Invite extends Component {
         let invite = this.props.invite;
         return (
             <div>
-                <h3>{invite.fields.title}</h3>
-                Капитан: {invite.fields.captain}
+                <h3>{invite.team.title}</h3>
+                Капитан: {invite.team.captain}
                 <div className="line"/>
             </div>
         )

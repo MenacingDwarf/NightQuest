@@ -5,8 +5,8 @@ class Team extends Component {
         let team = this.props.team;
         return (
             <div>
-                <h3>{team.fields.title}</h3>
-                Капитан: {team.fields.captain}
+                <h3>{team.title}</h3>
+                Капитан: {team.captain}
                 <div className="line"/>
             </div>
         )

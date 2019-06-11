@@ -105,16 +105,33 @@ def teams(request):
 
 
 def teams_info(request):
+    def team_to_dict(team):
+        return {
+            "id": team.id,
+            "captain": team.captain.username,
+            "title": team.title,
+            "members": [m.username for m in list(team.members.all())]
+        }
+
     if request.method == "GET":
         args = dict()
-        args['teams_list'] = serializers.serialize("json", list(
-            filter(lambda t: get_user(request.user.username) in t.members.all(),
-                   models.Team.objects.all())), ensure_ascii=False)
+        args['teams_list'] = []
+        teams = list(
+            filter(lambda t: get_user(request.user.username) in t.members.all(), models.Team.objects.all()))
+        for t in teams:
+            args['teams_list'].append(team_to_dict(t))
 
-        args['invites_list'] = serializers.serialize("json", list(
+        args['invites_list'] = []
+        invites = list(
             filter(lambda i: get_user(request.user.username) == i.new_member,
-                   models.Invite.objects.all())), ensure_ascii=False)
-
+                   models.Invite.objects.all()))
+        for i in invites:
+            args['invites_list'].append({
+                "id": i.id,
+                "new_member": i.new_member.username,
+                "team": team_to_dict(i.team)
+            })
+        print(args['invites_list'])
         return JsonResponse(args)
     else:
         return JsonResponse({})

@@ -17,8 +17,8 @@ class Teams extends Component {
             let answer = JSON.parse(this.responseText);
             console.log(answer);
             comp.setState({
-                teams: JSON.parse(answer.teams_list),
-                invites: JSON.parse(answer.invites_list)
+                teams: answer.teams_list,
+                invites: answer.invites_list
             })
         };
         xhr.send()

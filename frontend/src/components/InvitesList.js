@@ -8,7 +8,7 @@ class InvitesList extends Component {
         let invites = <div>Загрузка...</div>;
         if (this.props.invites !== null) {
             let invites_list = this.props.invites.map(invite => (
-                <Invite invite={invite} key={invite.pk}/>
+                <Invite invite={invite} key={invite.id}/>
             ));
             invites = this.props.invites.length > 0 ? (
                 <div>

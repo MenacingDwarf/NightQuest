@@ -7,7 +7,7 @@ class TeamsList extends Component {
         let teams = <div>Загрузка...</div>
         if (this.props.teams !== null) {
             let teams_list = this.props.teams.map(team => (
-                <Team team={team} key={team.pk}/>
+                <Team team={team} key={team.id}/>
             ));
             teams = this.props.teams.length > 0 ? (
                 <div>

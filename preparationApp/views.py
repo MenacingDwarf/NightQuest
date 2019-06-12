@@ -91,14 +91,7 @@ def personal_area(request):
 
 def teams(request):
     if request.user.is_authenticated:
-        args = make_args(request)
-        args['teams_list'] = list(filter(lambda t: get_user(request.user.username) in t.members.all(),
-                                         models.Team.objects.all()))
-
-        args['invites_list'] = list(filter(lambda i: get_user(request.user.username) == i.new_member,
-                                           models.Invite.objects.all()))
-
-        return render(request, 'preparationApp/teamsPage.html', args)
+        return render(request, 'frontend/index.html')
     else:
         request.session['message'] = 'Необходима авторизация'
         return redirect('/login')
@@ -158,6 +151,7 @@ def change_team(request):
     return redirect('/teams')
 
 
+@csrf_exempt
 def add_team(request):
     team = models.Team(captain=get_user(request.user.username), title=request.POST['title'])
     team.save()

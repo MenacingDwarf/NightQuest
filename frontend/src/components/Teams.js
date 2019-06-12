@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 import TeamsList from "./TeamsList";
 import InvitesList from "./InvitesList";
+import NewTeam from "./NewTeam";
 
 class Teams extends Component {
     state = {
         teams: null,
-        invites: null
+        invites: null,
+        creating: false
     };
 
     componentDidMount() {
@@ -23,15 +25,23 @@ class Teams extends Component {
         };
         xhr.send()
     };
+
     render() {
+        let new_team = this.state.creating ? (
+            <NewTeam/>
+        ) : null;
+        let new_button_text = this.state.creating ? "Закрыть" : "Новая команда";
         return (
             <div className="row">
                 <div className="col-7">
                     <div style={{marginBottom: "0.25em"}}>
                         <h4 style={{display: "inline"}}>СПИСОК ВАШИХ КОМАНД</h4>
-                        <span className="new_team-button">Новая команда</span>
+                        <span className="new_team-button" onClick={() => this.setState({creating: !this.state.creating})}>
+                            {new_button_text}
+                            </span>
                     </div>
                     <div className="line"/>
+                    {new_team}
                     <TeamsList teams={this.state.teams}/>
                 </div>
                 <div className="col-5">

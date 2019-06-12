@@ -7,6 +7,12 @@ body {
     color: white;
     font-size: 18px;
 }
+a {
+    color: inherit;
+}
+a:hover{
+    color: inherit;
+}
 .line {
     width: 100%;
     border-top: 2px solid #8D161A;
@@ -26,11 +32,12 @@ input[type="submit"].register-button {
     text-align: center;
     background-color: #8D161A;
     text-transform: uppercase;
-    padding: 0.5em;
+    padding: 0.3em;
     font-weight: bold;
     border: 0;
     color: white;
     margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 .additional-text {
     color: gray;
@@ -148,7 +155,7 @@ input[type="submit"].register-button:hover {
 .team-place {
     border: dotted gray;
     margin-bottom: 0.5em;
-    border-width: 2px 0 2px 0;
+    border-width: 0 0 2px 0;
     padding: 0.5em;
 }
 
